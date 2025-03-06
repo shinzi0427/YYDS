@@ -77,11 +77,11 @@ profile:
   store-selected: true
   store-fake-ip: true
 
-external-controller: 0.0.0.0:9090
-external-ui-url: https://github.com/MetaCubeX/metacubexd/archive/refs/heads/gh-pages.zip
-external-ui: ui
-external-ui-name: metacubexd
-secret: 123456
+# external-controller: 0.0.0.0:9090
+# external-ui-url: https://github.com/MetaCubeX/metacubexd/archive/refs/heads/gh-pages.zip
+# external-ui: ui
+# external-ui-name: metacubexd
+# secret: 123456
 
 # 自定 GEO 下载地址
 geox-url:
@@ -162,6 +162,8 @@ dns:
     - '*.ntp.org.cn'
     - '+.pool.ntp.org'
     - time1.cloud.tencent.com
+    #放行DDNS
+    - '+.190903.xyz'
 
 # 本地自建节点组
 proxies:
@@ -374,6 +376,12 @@ rule-providers:
 
 # 路由
 rules:
+  # >新增
+  - DOMAIN-SUFFIX,v4.plex.tv,直连
+  - DOMAIN-SUFFIX,amd.com,国外网站
+  - DOMAIN-SUFFIX,pathofexile.com,游戏平台
+  - DOMAIN-SUFFIX,pathofexile2.com,游戏平台
+  - DOMAIN-SUFFIX,poecdn.com,游戏平台
   # >屏蔽QUIC
   - AND,((DST-PORT,443),(NETWORK,UDP)),REJECT-DROP
   # 常用必备
