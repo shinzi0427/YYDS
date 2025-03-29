@@ -382,7 +382,6 @@ rules:
   - DOMAIN-SUFFIX,pathofexile.com,游戏平台
   - DOMAIN-SUFFIX,pathofexile2.com,游戏平台
   - DOMAIN-SUFFIX,poecdn.com,游戏平台
-  - DOMAIN-SUFFIX,naranja.tech,美国策略
   # >屏蔽QUIC
   - AND,((DST-PORT,443),(NETWORK,UDP)),REJECT-DROP
   # 常用必备
