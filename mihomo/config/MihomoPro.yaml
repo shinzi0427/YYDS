@@ -77,11 +77,11 @@ profile:
   store-selected: true
   store-fake-ip: true
 
-external-controller: 0.0.0.0:9090
-external-ui-url: https://github.com/MetaCubeX/metacubexd/archive/refs/heads/gh-pages.zip
-external-ui: ui
-external-ui-name: metacubexd
-secret: 123456
+#external-controller: 0.0.0.0:9090
+#external-ui-url: https://github.com/MetaCubeX/metacubexd/archive/refs/heads/gh-pages.zip
+#external-ui: ui
+#external-ui-name: metacubexd
+#secret: 123456
 
 sniffer:
   enable: true
