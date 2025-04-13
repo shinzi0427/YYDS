@@ -108,7 +108,7 @@ dns:
   fake-ip-range: 198.18.0.1/16
   default-nameserver: ['119.29.29.29', '180.184.1.1', '223.5.5.5']
   nameserver: ['https://doh.pub/dns-query', 'https://dns.alidns.com/dns-query']
-  fake-ip-filter: ['rule-set:cn_domain,private_domain,fix-direct', '*.lan', '*.local', '*.home.arpa', '+.gitv.tv', '+.docker.io', '+.miwifi.com', '+.safebrowsing.apple', 'Mijia Cloud', 'time.*.com', 'time.*.gov', 'time.*.edu.cn', 'time.*.apple.com', 'time-ios.apple.com', 'time1.*.com', 'time2.*.com', 'time3.*.com', 'time4.*.com', 'time5.*.com', 'time6.*.com', 'time7.*.com', 'ntp.*.com', 'ntp1.*.com', 'ntp2.*.com', 'ntp3.*.com', 'ntp4.*.com', 'ntp5.*.com', 'ntp6.*.com', 'ntp7.*.com', '*.time.edu.cn', '*.ntp.org.cn', '+.pool.ntp.org', 'time1.cloud.tencent.com', '+.pub.3gppnetwork.org']
+  fake-ip-filter: ['rule-set:cn_domain,private_domain,fix-direct', '*.lan', '*.local', '*.home.arpa', '+.gitv.tv', '+.docker.io', '+.miwifi.com', '+.safebrowsing.apple', 'Mijia Cloud', 'time.*.com', 'time.*.gov', 'time.*.edu.cn', 'time.*.apple.com', 'time-ios.apple.com', 'time1.*.com', 'time2.*.com', 'time3.*.com', 'time4.*.com', 'time5.*.com', 'time6.*.com', 'time7.*.com', 'ntp.*.com', 'ntp1.*.com', 'ntp2.*.com', 'ntp3.*.com', 'ntp4.*.com', 'ntp5.*.com', 'ntp6.*.com', 'ntp7.*.com', '*.time.edu.cn', '*.ntp.org.cn', '+.pool.ntp.org', 'time1.cloud.tencent.com', '+.pub.3gppnetwork.org', '*.190903.xyz']
 
 # 本地自建节点组
 proxies:
@@ -226,6 +226,12 @@ rule-providers:
 
 # 路由
 rules:
+  # >新增
+  - DOMAIN-SUFFIX,v4.plex.tv,直连
+  - DOMAIN-SUFFIX,amd.com,国外网站
+  - DOMAIN-SUFFIX,pathofexile.com,游戏平台
+  - DOMAIN-SUFFIX,pathofexile2.com,游戏平台
+  - DOMAIN-SUFFIX,poecdn.com,游戏平台
   # 常用必备
   - DST-PORT,123,DIRECT
   # 防御
