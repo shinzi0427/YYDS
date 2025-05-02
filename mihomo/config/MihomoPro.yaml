@@ -247,6 +247,7 @@ rules:
   - DOMAIN-SUFFIX,pathofexile.com,游戏平台
   - DOMAIN-SUFFIX,pathofexile2.com,游戏平台
   - DOMAIN-SUFFIX,poecdn.com,游戏平台
+  - DOMAIN-SUFFIX,infini.money,货币平台
   # 常用必备
   - DST-PORT,123,DIRECT
   - DOMAIN-SUFFIX,imee.me,DIRECT
