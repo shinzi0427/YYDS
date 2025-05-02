@@ -244,6 +244,7 @@ rules:
   # >新增
   - DOMAIN-SUFFIX,v4.plex.tv,DIRECT
   - DOMAIN-SUFFIX,amd.com,国外网站
+  - DOMAIN-SUFFIX,picgo.net,国外网站
   - DOMAIN-SUFFIX,pathofexile.com,游戏平台
   - DOMAIN-SUFFIX,pathofexile2.com,游戏平台
   - DOMAIN-SUFFIX,poecdn.com,游戏平台
