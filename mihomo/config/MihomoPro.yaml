@@ -122,6 +122,7 @@ dns:
     - +.market.xiaomi.com
     - +.push.apple.com
     - beiyong.dynuddns.net
+    - +.190903.xyz
 
 # 策略组 
 proxy-groups:
