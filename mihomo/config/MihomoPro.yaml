@@ -49,7 +49,7 @@ ClassicalYaml: &ClassicalYaml {type: http, interval: 86400, behavior: classical,
 # 注意：请提供您的机场订阅链接，每个链接一行，并为每个机场命名，末尾的[A]为每个节点添加机场名称前缀，可自定义
 proxy-providers:
   机场A: {<<: *PProviders, url: '机场订阅地址', override: {additional-prefix: '[A] '}}
-  机场B: {<<: *PProviders, url: '机场订阅地址', override: {additional-prefix: '[B] '}}
+#  机场B: {<<: *PProviders, url: '机场订阅地址', override: {additional-prefix: '[B] '}}
 
 # 全局配置
 mode: rule
@@ -150,7 +150,7 @@ proxy-groups:
   - {name: 美国策略,  type: select, proxies: [美国自动, 美国均衡-散列, 美国均衡-轮询], include-all: true, filter: *FilterUS, icon: https://git.imee.me/https://github.com/Koolson/Qure/raw/master/IconSet/Color/United_States.png}
    # 其他策略
   - {name: 故障转移,  <<: *FallBack, proxies: [香港策略, 新加坡策略, 日本策略, 美国策略, 全球手动, DIRECT], icon: https://git.imee.me/https://github.com/Koolson/Qure/raw/master/IconSet/Color/ULB.png}
-  - {name: 链式代理,  type: relay, proxies: [中转机, 落地机], icon: https://git.imee.me/https://github.com/Koolson/Qure/raw/master/IconSet/Color/TIDAL_1.png}
+  - {name: 链式代理,  type: dialer-proxy, proxies: [中转机, 落地机], icon: https://git.imee.me/https://github.com/Koolson/Qure/raw/master/IconSet/Color/TIDAL_1.png}
   - {name: 中转机,    type: select, proxies: [香港策略, 日本策略, 新加坡策略, 美国策略, 全球手动], icon: https://git.imee.me/https://github.com/Koolson/Qure/raw/master/IconSet/Color/Rocket.png}
   - {name: 落地机,    type: select, include-all: true, filter: *FilterAll, icon: https://git.imee.me/https://github.com/Koolson/Qure/raw/master/IconSet/Color/Domestic.png}
   - {name: 国内网站,  type: select, proxies: [DIRECT, 默认代理], icon: https://git.imee.me/https://github.com/Koolson/Qure/raw/master/IconSet/Color/China.png}
@@ -273,3 +273,13 @@ rules:
   - RULE-SET,telegram_ip,Telegram,no-resolve
   - RULE-SET,cn_ip,国内网站,no-resolve
   - MATCH,漏网之鱼
+# Goe
+geodata-mode: true  
+geodata-loader: 'standard'
+geox-url:
+  geosite: 'https://github.com/MetaCubeX/meta-rules-dat/releases/latest/download/geosite.dat'
+  mmdb: 'https://github.com/MetaCubeX/meta-rules-dat/releases/latest/download/country.mmdb'
+  geoip: 'https://github.com/MetaCubeX/meta-rules-dat/releases/latest/download/geoip.dat'
+  asn: 'https://github.com/MetaCubeX/meta-rules-dat/releases/download/latest/GeoLite2-ASN.mmdb'
+geo-auto-update: true
+geo-update-interval: 24
