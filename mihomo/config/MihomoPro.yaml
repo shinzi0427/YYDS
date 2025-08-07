@@ -226,6 +226,9 @@ rule-providers:
 rules:
   # 常用必备
   - DST-PORT,123,DIRECT
+  - DOMAIN,apple-relay.apple.com,AI平台
+  - DOMAIN,apple-relay.cloudflare.com,AI平台
+  - DOMAIN-KEYWORD,apple-relay,AI平台
   - DOMAIN-SUFFIX,imee.me,DIRECT
   # 防御
   - RULE-SET,category-public-tracker,REJECT-DROP
