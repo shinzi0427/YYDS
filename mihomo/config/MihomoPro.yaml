@@ -199,7 +199,7 @@ rule-providers:
   facebook:                  {<<: *DomainMrs, url: https://git.imee.me/https://github.com/666OS/YYDS/raw/main/mihomo/rules/facebook.mrs}
   meta:                      {<<: *DomainMrs, url: https://git.imee.me/https://github.com/666OS/YYDS/raw/main/mihomo/rules/meta.mrs}
   google:                    {<<: *DomainMrs, url: https://git.imee.me/https://github.com/666OS/YYDS/raw/main/mihomo/rules/google.mrs}
-  apple-cn:                  {<<: *DomainMrs, url: https://git.imee.me/https://github.com/666OS/YYDS/raw/main/mihomo/rules/apple-cn.mrs}
+#  apple-cn:                  {<<: *DomainMrs, url: https://git.imee.me/https://github.com/666OS/YYDS/raw/main/mihomo/rules/apple-cn.mrs}
   apple:                     {<<: *DomainMrs, url: https://git.imee.me/https://github.com/666OS/YYDS/raw/main/mihomo/rules/apple.mrs}
   paypal@cn:                 {<<: *DomainMrs, url: https://git.imee.me/https://github.com/666OS/YYDS/raw/main/mihomo/rules/paypal@cn.mrs}
   paypal:                    {<<: *DomainMrs, url: https://git.imee.me/https://github.com/666OS/YYDS/raw/main/mihomo/rules/paypal.mrs}
@@ -255,7 +255,7 @@ rules:
   - RULE-SET,facebook,脸书服务
   - RULE-SET,meta,脸书服务
   - RULE-SET,google,谷歌服务
-  - RULE-SET,apple-cn,国内网站
+#  - RULE-SET,apple-cn,国内网站
   - RULE-SET,apple,苹果服务
   - RULE-SET,paypal@cn,国内网站
   - RULE-SET,paypal,货币平台
