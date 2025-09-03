@@ -110,6 +110,8 @@ dns:
   default-nameserver:
     - tls://223.5.5.5
     - tls://223.6.6.6
+    - tls://[2400:3200::1]
+    - tls://[2400:3200:baba::1]
   nameserver:
     - https://dns.alidns.com/dns-query
     - https://doh.pub/dns-query
