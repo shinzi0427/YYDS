@@ -125,6 +125,8 @@ dns:
     - 119.29.29.29
     - 180.184.1.1
     - 223.5.5.5
+    - tls://[2400:3200::1]
+    - tls://[2400:3200:baba::1]
   nameserver:
     - https://dns.alidns.com/dns-query
     - https://doh.pub/dns-query
@@ -136,6 +138,8 @@ dns:
     - +.docker.io
     - +.market.xiaomi.com
     - +.push.apple.com
+    - +.190903.xyz
+    - +.910606.xyz
 
 # ==================== 代理策略组 ====================
 proxy-groups:
