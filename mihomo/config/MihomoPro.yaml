@@ -221,13 +221,13 @@ rules:
   - RULE-SET,Advertising,REJECT
 
   # 域名规则
+  - RULE-SET,AI,人工智能
   - RULE-SET,LocationDKS,抖快书定位
   - RULE-SET,ConnCheck,直接连接
   - RULE-SET,Private,直接连接
   - RULE-SET,Direct,直接连接
   - RULE-SET,XPTV,直接连接
   - RULE-SET,AppleCN,直接连接
-  - RULE-SET,AI,人工智能
   - DOMAIN-KEYWORD,speedtest,网络测试
   - RULE-SET,Speedtest,网络测试
   - RULE-SET,Twitter,推特社交
@@ -247,10 +247,10 @@ rules:
   - RULE-SET,China,国内流量
 
   # IP规则
+  - RULE-SET,AIIP,人工智能,no-resolve
   - RULE-SET,AdvertisingIP,REJECT,no-resolve
   - RULE-SET,PrivateIP,直接连接,no-resolve
   - RULE-SET,XPTVIP,直接连接,no-resolve
-  - RULE-SET,AIIP,人工智能,no-resolve
   - RULE-SET,TelegramIP,电报消息,no-resolve
   - RULE-SET,SocialMediaIP,社交平台,no-resolve
   - RULE-SET,EmbyIP,Emby服,no-resolve
