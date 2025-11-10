@@ -91,32 +91,19 @@ tun:
   auto-route: true
   auto-redirect: true
   auto-detect-interface: true
-   
-# ==================== DNS 配置 (已更新) ====================
+# DNS设置回滚   
 dns:
   enable: true
   ipv6: true
   enhanced-mode: fake-ip
   fake-ip-range: 198.18.0.1/16
-  # 基础DNS服务器（必须为IP，用于域名类型DNS配置）
   default-nameserver:
-    - tls://223.5.5.5
-    - tls://223.6.6.6
-  # 代理DNS（代理规则使用国外DNS避免泄漏）
+    - 119.29.29.29
+    - 180.184.1.1
+    - 223.5.5.5
   nameserver:
-    - https://cloudflare-dns.com/dns-query
-    - https://dns.google/dns-query
-  # 代理节点解析DNS（确保能解析节点IP）
-  proxy-server-nameserver:
     - https://dns.alidns.com/dns-query
     - https://doh.pub/dns-query
-  # 直连DNS（直连规则使用国内DNS）
-  direct-nameserver:
-    - https://dns.alidns.com/dns-query
-    - https://doh.pub/dns-query
-  # 尊重规则（尊重规则，确保DNS配置生效）
-  respect-rules: true
-  # FakeIP配置列表（默认黑名单）
   fake-ip-filter:
     - rule-set:ConnCheck
     - rule-set:Private
