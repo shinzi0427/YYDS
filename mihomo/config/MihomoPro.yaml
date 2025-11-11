@@ -186,6 +186,7 @@ rules:
   - RULE-SET,Direct,直接连接
   - RULE-SET,XPTV,直接连接
   - RULE-SET,AppleCN,直接连接
+  - RULE-SET,SystemOTA,直接连接
   - DOMAIN-KEYWORD,speedtest,网络测试
   - RULE-SET,Speedtest,网络测试
   - RULE-SET,Twitter,推特社交
@@ -256,6 +257,7 @@ rule-providers:
   Emby: {<<: *BehaviorDN, url: https://watch.910606.xyz/https://github.com/666OS/rules/raw/release/mihomo/domain/Emby.mrs}
   Streaming: {<<: *BehaviorDN, url: https://watch.910606.xyz/https://github.com/666OS/rules/raw/release/mihomo/domain/Streaming.mrs}
   AppleCN: {<<: *BehaviorDN, url: https://watch.910606.xyz/https://github.com/666OS/rules/raw/release/mihomo/domain/AppleCN.mrs}
+  SystemOTA: {<<: *BehaviorDN, url: https://watch.910606.xyz/https://github.com/666OS/rules/raw/release/mihomo/domain/SystemOTA.mrs}
   Apple: {<<: *BehaviorDN, url: https://watch.910606.xyz/https://github.com/666OS/rules/raw/release/mihomo/domain/Apple.mrs}
   Google: {<<: *BehaviorDN, url: https://watch.910606.xyz/https://github.com/666OS/rules/raw/release/mihomo/domain/Google.mrs}
   Microsoft: {<<: *BehaviorDN, url: https://watch.910606.xyz/https://github.com/666OS/rules/raw/release/mihomo/domain/Microsoft.mrs}
