@@ -13,7 +13,7 @@
 # 版本: v6.0.1
 # 作者: YYDS666
 # 更新: 2025 年 9 月 9 日
-# 精简：2025 年 11 月 8 日
+# 精简：2025 年 11 月 12 日
 # 频道: https://t.me/Pinched666
 # 描述: 在proxy-providers加入您的机场订阅链接（代理提供者）
 # ==================== 锚点配置 ====================
@@ -92,7 +92,6 @@ tun:
   auto-route: true
   auto-redirect: true
   auto-detect-interface: true
-# DNS设置回滚   
 dns:
   enable: true
   ipv6: false
@@ -106,7 +105,7 @@ dns:
     - https://dns.alidns.com/dns-query
     - https://doh.pub/dns-query
   fake-ip-filter:
-    - rule-set:ConnCheck
+    - rule-set:Direct
     - rule-set:Private
     - rule-set:China
     - +.miwifi.com
@@ -181,7 +180,6 @@ rules:
   - RULE-SET,Advertising,REJECT
   # 域名规则
   - RULE-SET,LocationDKS,抖快书定位
-  - RULE-SET,ConnCheck,直接连接
   - RULE-SET,Private,直接连接
   - RULE-SET,Direct,直接连接
   - RULE-SET,XPTV,直接连接
