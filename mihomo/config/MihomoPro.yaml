@@ -63,7 +63,6 @@ keep-alive-idle: 600
 authentication:
   - mihomo:yyds666
 skip-auth-prefixes:
-  - 10.0.0.0/8
   - 192.168.1.0/24
   - 192.168.31.0/24
   - 192.168.100.0/24
@@ -184,7 +183,6 @@ rules:
   - RULE-SET,Private,直接连接
   - RULE-SET,Direct,直接连接
   - RULE-SET,XPTV,直接连接
-  - RULE-SET,AppleCN,直接连接
   - RULE-SET,SystemOTA,直接连接
   - DOMAIN-KEYWORD,speedtest,网络测试
   - RULE-SET,Speedtest,网络测试
@@ -250,7 +248,6 @@ rule-providers:
   XPTV: {<<: *BehaviorDN, url: https://watch.910606.xyz/https://github.com/666OS/rules/raw/release/mihomo/domain/XPTV.mrs}
   Emby: {<<: *BehaviorDN, url: https://watch.910606.xyz/https://github.com/666OS/rules/raw/release/mihomo/domain/Emby.mrs}
   Streaming: {<<: *BehaviorDN, url: https://watch.910606.xyz/https://github.com/666OS/rules/raw/release/mihomo/domain/Streaming.mrs}
-  AppleCN: {<<: *BehaviorDN, url: https://watch.910606.xyz/https://github.com/666OS/rules/raw/release/mihomo/domain/AppleCN.mrs}
   SystemOTA: {<<: *BehaviorDN, url: https://watch.910606.xyz/https://github.com/666OS/rules/raw/release/mihomo/domain/SystemOTA.mrs}
   Apple: {<<: *BehaviorDN, url: https://watch.910606.xyz/https://github.com/666OS/rules/raw/release/mihomo/domain/Apple.mrs}
   Google: {<<: *BehaviorDN, url: https://watch.910606.xyz/https://github.com/666OS/rules/raw/release/mihomo/domain/Google.mrs}
