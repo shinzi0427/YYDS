@@ -10,7 +10,7 @@
 # >>=====================================<<
 # 名称: MihomoPro 高大全版
 # 地址: https://github.com/666OS/YYDS
-# 版本: v6.0.2_lite002
+# 版本: v6.0.2_lite001
 # 作者: YYDS666
 # 更新: 2025 年 9 月 9 日
 # 精简：2025 年 11 月 12 日
@@ -85,7 +85,7 @@ sniffer:
   parse-pure-ip: true
 tun:
   enable: true
-  stack: mixed
+  stack: gvisor
   dns-hijack:
     - "any:53"
     - "tcp://any:53"
@@ -153,7 +153,7 @@ proxy-groups:
   # ==================== 其他策略组 ====================
   - {name: 全球手动, type: select, include-all: true, filter: *FilterAL, icon: https://watch.910606.xyz/https://github.com/Koolson/Qure/raw/master/IconSet/Color/Clubhouse.png}
   - {name: 链式代理, type: relay, proxies: [中转机, 落地机], icon: https://watch.910606.xyz/https://github.com/Koolson/Qure/raw/master/IconSet/Color/TIDAL_1.png}
-  - {name: 中转机, type: select, proxies: [香港策略, 狮城策略, 日本策略, 美国策略, 全球手动], icon: https://watch.910606.xyz/https://github.com/Koolson/Qure/raw/master/IconSet/Color/Rocket.png}
+  - {name: 中转机, type: select, proxies: [香港策略, 狮城策略, 日本策略, 美国策略, 全球手动, 直接连接], icon: https://watch.910606.xyz/https://github.com/Koolson/Qure/raw/master/IconSet/Color/Rocket.png}
   - {name: 落地机, type: select, include-all: true, filter: *FilterAL, icon: https://watch.910606.xyz/https://github.com/Koolson/Qure/raw/master/IconSet/Color/Domestic.png}
   # ==================== 自动测速组 ====================
   - {name: 香港自动, <<: *BaseUT, include-all: true, filter: *FilterHK, icon: https://watch.910606.xyz/https://github.com/Koolson/Qure/raw/master/IconSet/Color/Auto.png}
@@ -183,6 +183,7 @@ rules:
   - RULE-SET,Private,直接连接
   - RULE-SET,Direct,直接连接
   - RULE-SET,XPTV,直接连接
+  - RULE-SET,AppleCN,直接连接
   - RULE-SET,SystemOTA,直接连接
   - DOMAIN-KEYWORD,speedtest,网络测试
   - RULE-SET,Speedtest,网络测试
@@ -232,6 +233,8 @@ rule-providers:
   Direct: {<<: *BehaviorDN, url: https://watch.910606.xyz/https://github.com/666OS/rules/raw/release/mihomo/domain/Direct.mrs}
   LocationDKS: {<<: *BehaviorDN, url: https://watch.910606.xyz/https://github.com/666OS/rules/raw/release/mihomo/domain/LocationDKS.mrs}
   Private: {<<: *BehaviorDN, url: https://watch.910606.xyz/https://github.com/666OS/rules/raw/release/mihomo/domain/Private.mrs}
+  Download: {<<: *BehaviorDN, url: https://watch.910606.xyz/https://github.com/666OS/rules/raw/release/mihomo/domain/Download.mrs}
+  ConnCheck: {<<: *BehaviorDN, url: https://watch.910606.xyz/https://github.com/666OS/rules/raw/release/mihomo/domain/ConnCheck.mrs}
   Speedtest: {<<: *BehaviorDN, url: https://watch.910606.xyz/https://github.com/666OS/rules/raw/release/mihomo/domain/Speedtest.mrs}
   AI: {<<: *BehaviorDN, url: https://watch.910606.xyz/https://github.com/666OS/rules/raw/release/mihomo/domain/AI.mrs}
   Telegram: {<<: *BehaviorDN, url: https://watch.910606.xyz/https://github.com/666OS/rules/raw/release/mihomo/domain/Telegram.mrs}
@@ -248,6 +251,7 @@ rule-providers:
   XPTV: {<<: *BehaviorDN, url: https://watch.910606.xyz/https://github.com/666OS/rules/raw/release/mihomo/domain/XPTV.mrs}
   Emby: {<<: *BehaviorDN, url: https://watch.910606.xyz/https://github.com/666OS/rules/raw/release/mihomo/domain/Emby.mrs}
   Streaming: {<<: *BehaviorDN, url: https://watch.910606.xyz/https://github.com/666OS/rules/raw/release/mihomo/domain/Streaming.mrs}
+  AppleCN: {<<: *BehaviorDN, url: https://watch.910606.xyz/https://github.com/666OS/rules/raw/release/mihomo/domain/AppleCN.mrs}
   SystemOTA: {<<: *BehaviorDN, url: https://watch.910606.xyz/https://github.com/666OS/rules/raw/release/mihomo/domain/SystemOTA.mrs}
   Apple: {<<: *BehaviorDN, url: https://watch.910606.xyz/https://github.com/666OS/rules/raw/release/mihomo/domain/Apple.mrs}
   Google: {<<: *BehaviorDN, url: https://watch.910606.xyz/https://github.com/666OS/rules/raw/release/mihomo/domain/Google.mrs}
