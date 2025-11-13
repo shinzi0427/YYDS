@@ -85,7 +85,7 @@ sniffer:
   parse-pure-ip: true
 tun:
   enable: true
-  stack: gvisor
+  stack: mixed
   dns-hijack:
     - "any:53"
     - "tcp://any:53"
@@ -184,7 +184,6 @@ rules:
   - RULE-SET,Direct,直接连接
   - RULE-SET,XPTV,直接连接
   - RULE-SET,AppleCN,直接连接
-  - RULE-SET,SystemOTA,直接连接
   - DOMAIN-KEYWORD,speedtest,网络测试
   - RULE-SET,Speedtest,网络测试
   - RULE-SET,Twitter,推特社交
@@ -234,7 +233,6 @@ rule-providers:
   LocationDKS: {<<: *BehaviorDN, url: https://watch.910606.xyz/https://github.com/666OS/rules/raw/release/mihomo/domain/LocationDKS.mrs}
   Private: {<<: *BehaviorDN, url: https://watch.910606.xyz/https://github.com/666OS/rules/raw/release/mihomo/domain/Private.mrs}
   Download: {<<: *BehaviorDN, url: https://watch.910606.xyz/https://github.com/666OS/rules/raw/release/mihomo/domain/Download.mrs}
-  ConnCheck: {<<: *BehaviorDN, url: https://watch.910606.xyz/https://github.com/666OS/rules/raw/release/mihomo/domain/ConnCheck.mrs}
   Speedtest: {<<: *BehaviorDN, url: https://watch.910606.xyz/https://github.com/666OS/rules/raw/release/mihomo/domain/Speedtest.mrs}
   AI: {<<: *BehaviorDN, url: https://watch.910606.xyz/https://github.com/666OS/rules/raw/release/mihomo/domain/AI.mrs}
   Telegram: {<<: *BehaviorDN, url: https://watch.910606.xyz/https://github.com/666OS/rules/raw/release/mihomo/domain/Telegram.mrs}
@@ -252,7 +250,6 @@ rule-providers:
   Emby: {<<: *BehaviorDN, url: https://watch.910606.xyz/https://github.com/666OS/rules/raw/release/mihomo/domain/Emby.mrs}
   Streaming: {<<: *BehaviorDN, url: https://watch.910606.xyz/https://github.com/666OS/rules/raw/release/mihomo/domain/Streaming.mrs}
   AppleCN: {<<: *BehaviorDN, url: https://watch.910606.xyz/https://github.com/666OS/rules/raw/release/mihomo/domain/AppleCN.mrs}
-  SystemOTA: {<<: *BehaviorDN, url: https://watch.910606.xyz/https://github.com/666OS/rules/raw/release/mihomo/domain/SystemOTA.mrs}
   Apple: {<<: *BehaviorDN, url: https://watch.910606.xyz/https://github.com/666OS/rules/raw/release/mihomo/domain/Apple.mrs}
   Google: {<<: *BehaviorDN, url: https://watch.910606.xyz/https://github.com/666OS/rules/raw/release/mihomo/domain/Google.mrs}
   Microsoft: {<<: *BehaviorDN, url: https://watch.910606.xyz/https://github.com/666OS/rules/raw/release/mihomo/domain/Microsoft.mrs}
