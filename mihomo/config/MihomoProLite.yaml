@@ -47,7 +47,7 @@ ipv6: true
 allow-lan: true
 unified-delay: true
 tcp-concurrent: true
-log-level: warning
+log-level: error
 bind-address: '*'
 find-process-mode: 'always'
 global-client-fingerprint: chrome
@@ -178,6 +178,10 @@ proxy-groups:
 
 # ==================== 规则路由 ====================
 rules: 
+  # AI优先
+  - RULE-SET,AI,人工智能
+  - RULE-SET,AIIP,人工智能,no-resolve
+  
   # 拦截规则
   - RULE-SET,Tracking,REJECT
   - RULE-SET,Advertising,REJECT
@@ -190,7 +194,6 @@ rules:
   - RULE-SET,XPTV,直接连接
   - RULE-SET,Download,直接连接
   - RULE-SET,AppleCN,直接连接
-  - RULE-SET,AI,人工智能
   - DOMAIN-KEYWORD,speedtest,网络测试
   - RULE-SET,Speedtest,网络测试
   - RULE-SET,Twitter,推特社交
@@ -213,7 +216,6 @@ rules:
   - RULE-SET,AdvertisingIP,REJECT,no-resolve
   - RULE-SET,PrivateIP,直接连接,no-resolve
   - RULE-SET,XPTVIP,直接连接,no-resolve
-  - RULE-SET,AIIP,人工智能,no-resolve
   - RULE-SET,TelegramIP,电报消息,no-resolve
   - RULE-SET,SocialMediaIP,社交平台,no-resolve
   - RULE-SET,EmbyIP,Emby服,no-resolve
