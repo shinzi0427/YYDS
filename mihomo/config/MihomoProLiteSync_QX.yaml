@@ -3,15 +3,48 @@
 # 地址: https://github.com/666OS/YYDS
 # 版本: v6.1.0_Lite_Sync_QX
 # 更新: 2026-01-08
+# 格式: YAML
 # ==================== 锚点配置 ====================
 # 代理提供者模板
-BaseProvider: &BaseProvider {type: http, interval: 86400, proxy: DIRECT, health-check: {enable: true, url: 'https://www.google.com/generate_204', interval: 300}, filter: '^(?!.*(群|邀请|返利|循环|官网|客服|网站|网址|获取|订阅|流量|到期|机场|下次|版本|官址|备用|过期|已用|联系|邮箱|工单|贩卖|通知|倒卖|防止|国内|地址|频道|无法|说明|使用|提示|特别|访问|支持|教程|关注|更新|作者|加入|USE|USED|TOTAL|EXPIRE|EMAIL|Panel|Channel|Author))'}
+BaseProvider: &BaseProvider
+  type: http
+  interval: 86400
+  proxy: DIRECT
+  health-check:
+    enable: true
+    url: 'https://www.google.com/generate_204'
+    interval: 300
+  filter: '^(?!.*(群|邀请|返利|循环|官网|客服|网站|网址|获取|订阅|流量|到期|机场|下次|版本|官址|备用|过期|已用|联系|邮箱|工单|贩卖|通知|倒卖|防止|国内|地址|频道|无法|说明|使用|提示|特别|访问|支持|教程|关注|更新|作者|加入|USE|USED|TOTAL|EXPIRE|EMAIL|Panel|Channel|Author))'
 
 # 策略组类型模板
-BaseFB: &BaseFB {type: fallback, interval: 200, lazy: true, url: 'https://www.google.com/generate_204'}
-BaseCH: &BaseCH {type: load-balance, interval: 200, lazy: true, url: 'https://www.google.com/generate_204', strategy: consistent-hashing, hidden: true}
-BaseCR: &BaseCR {type: load-balance, interval: 200, lazy: true, url: 'https://www.google.com/generate_204', strategy: round-robin, hidden: true}
-BaseUT: &BaseUT {type: url-test, interval: 200, lazy: true, url: 'https://www.google.com/generate_204', hidden: true}
+BaseFB: &BaseFB
+  type: fallback
+  interval: 200
+  lazy: true
+  url: 'https://www.google.com/generate_204'
+
+BaseCH: &BaseCH
+  type: load-balance
+  interval: 200
+  lazy: true
+  url: 'https://www.google.com/generate_204'
+  strategy: consistent-hashing
+  hidden: true
+
+BaseCR: &BaseCR
+  type: load-balance
+  interval: 200
+  lazy: true
+  url: 'https://www.google.com/generate_204'
+  strategy: round-robin
+  hidden: true
+
+BaseUT: &BaseUT
+  type: url-test
+  interval: 200
+  lazy: true
+  url: 'https://www.google.com/generate_204'
+  hidden: true
 
 # 节点筛选正则
 FilterHK: &FilterHK '^(?=.*(?i)(港|🇭🇰|HK|Hong|HKG))(?!.*(排除1|排除2|5x)).*$'
@@ -30,8 +63,14 @@ SelectSG: &SelectSG {type: select, proxies: [狮城策略, 默认代理, 故障�
 # ==================== 代理提供者 ====================
 proxy-providers:
   # 请在下方 url 处填入你的订阅链接
-  优质服务商: {<<: *BaseProvider, url: '你的机场订阅链接', override: {additional-prefix: '[优] '}}
-  备用服务商: {<<: *BaseProvider, url: '你的备用订阅链接', override: {additional-prefix: '[备] '}}
+  优质服务商:
+    <<: *BaseProvider
+    url: '你的机场订阅链接'
+    override: {additional-prefix: '[优] '}
+  备用服务商:
+    <<: *BaseProvider
+    url: '你的备用订阅链接'
+    override: {additional-prefix: '[备] '}
 
 # ==================== 核心配置 ====================
 mode: rule
@@ -137,7 +176,7 @@ proxy-groups:
   - {name: GlobalMedia,   <<: *SelectPY, icon: https://git.imee.me/https://github.com/Koolson/Qure/raw/master/IconSet/Color/DomesticMedia.png}
   - {name: NewsMedia,     <<: *SelectUS, icon: https://git.imee.me/https://github.com/Koolson/Qure/raw/master/IconSet/Color/Apple_News.png}
 
-  # ==================== 社交平台 (拆分对齐QX) ====================
+  # ==================== 社交平台 (完全对齐 QX) ====================
   - {name: Telegram,      <<: *SelectPY, icon: https://git.imee.me/https://github.com/Koolson/Qure/raw/master/IconSet/Color/Telegram_X.png}
   - {name: Twitter,       <<: *SelectPY, icon: https://git.imee.me/https://github.com/Koolson/Qure/raw/master/IconSet/Color/X.png}
   - {name: TikTok,        <<: *SelectPY, icon: https://git.imee.me/https://github.com/Koolson/Qure/raw/master/IconSet/Color/Tiktok.png}
@@ -187,16 +226,16 @@ rules:
   - RULE-SET,Tracking,REJECT
   - RULE-SET,Advertising,REJECT
   - RULE-SET,Privacy,REJECT
-  - AND,((DST-PORT,443),(NETWORK,UDP)),REJECT  # 阻止 QUIC
+  - AND,((DST-PORT,443),(NETWORK,UDP)),REJECT
 
-  # 域名直连规则
+  # 直连规则
   - DOMAIN-SUFFIX,plex.direct,直接连接
   - DOMAIN-SUFFIX,190903.xyz,直接连接
   - RULE-SET,AppleCN,直接连接
   - RULE-SET,LocalAreaNetwork,直接连接
   - RULE-SET,ChinaMax,国内流量
 
-  # 应用规则
+  # 应用分流
   - RULE-SET,AppleAI_Gist,OpenAI
   - RULE-SET,OpenAI,OpenAI
   - RULE-SET,PayPal,PayPal
@@ -220,53 +259,52 @@ rules:
   - RULE-SET,Speedtest,网络测试
   - RULE-SET,Proxy,国外流量
 
-  # 兜底规则 (白名单模式，不认识的走兜底->代理)
+  # 防泄露白名单兜底
   - GEOIP,CN,国内流量
   - MATCH,兜底流量
 
-# ==================== 规则集提供者 (Blackmatrix7 Clash版) ====================
-# 使用 behavior: classical 引用 .list 文件，保持与 QX 规则高度一致
+# ==================== 规则集提供者 ====================
 rule-providers:
   # 广告/隐私
-  Advertising: {type: http, behavior: classical, interval: 86400, url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Advertising/Advertising.list", path: ./ruleset/Advertising.yaml}
-  Privacy: {type: http, behavior: classical, interval: 86400, url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Privacy/Privacy.list", path: ./ruleset/Privacy.yaml}
-  Tracking: {type: http, behavior: classical, interval: 86400, url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Global/Global.list", path: ./ruleset/Tracking.yaml}
+  Advertising: {type: http, behavior: classical, interval: 86400, url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Advertising/Advertising.yaml", path: ./ruleset/Advertising.yaml}
+  Privacy: {type: http, behavior: classical, interval: 86400, url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Privacy/Privacy.yaml", path: ./ruleset/Privacy.yaml}
+  Tracking: {type: http, behavior: classical, interval: 86400, url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Global/Global.yaml", path: ./ruleset/Tracking.yaml}
 
   # 直连
-  AppleCN: {type: http, behavior: classical, interval: 86400, url: "https://raw.githubusercontent.com/666OS/rules/refs/heads/release/surge/AppleCN.txt", path: ./ruleset/AppleCN.yaml}
-  ChinaMax: {type: http, behavior: classical, interval: 86400, url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/ChinaMax/ChinaMax.list", path: ./ruleset/ChinaMax.yaml}
-  LocalAreaNetwork: {type: http, behavior: classical, interval: 86400, url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Lan/Lan.list", path: ./ruleset/Lan.yaml}
-  Direct: {type: http, behavior: classical, interval: 86400, url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Direct/Direct.list", path: ./ruleset/Direct.yaml}
+  AppleCN: {type: http, behavior: domain, format: mrs, interval: 86400, url: "https://github.com/666OS/rules/raw/release/mihomo/domain/AppleCN.mrs", path: ./ruleset/AppleCN.mrs}
+  ChinaMax: {type: http, behavior: classical, interval: 86400, url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/ChinaMax/ChinaMax.yaml", path: ./ruleset/ChinaMax.yaml}
+  LocalAreaNetwork: {type: http, behavior: classical, interval: 86400, url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Lan/Lan.yaml", path: ./ruleset/Lan.yaml}
+  Direct: {type: http, behavior: classical, interval: 86400, url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Direct/Direct.yaml", path: ./ruleset/Direct.yaml}
 
   # AI
   AppleAI_Gist: {type: http, behavior: classical, interval: 86400, url: "https://gist.githubusercontent.com/shinzi0427/920602c317d3649f56ce75495e1efaca/raw/Apple-Intelligence.list", path: ./ruleset/AppleAI_Gist.yaml}
-  OpenAI: {type: http, behavior: classical, interval: 86400, url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/OpenAI/OpenAI.list", path: ./ruleset/OpenAI.yaml}
+  OpenAI: {type: http, behavior: classical, interval: 86400, url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/OpenAI/OpenAI.yaml", path: ./ruleset/OpenAI.yaml}
 
   # 媒体
-  YouTube: {type: http, behavior: classical, interval: 86400, url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/YouTube/YouTube.list", path: ./ruleset/YouTube.yaml}
-  Netflix: {type: http, behavior: classical, interval: 86400, url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Netflix/Netflix.list", path: ./ruleset/Netflix.yaml}
-  Emby: {type: http, behavior: classical, interval: 86400, url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Emby/Emby.list", path: ./ruleset/Emby.yaml}
-  GlobalMedia: {type: http, behavior: classical, interval: 86400, url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/GlobalMedia/GlobalMedia.list", path: ./ruleset/GlobalMedia.yaml}
-  NewsMedia: {type: http, behavior: classical, interval: 86400, url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/News/News.list", path: ./ruleset/NewsMedia.yaml}
+  YouTube: {type: http, behavior: classical, interval: 86400, url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/YouTube/YouTube.yaml", path: ./ruleset/YouTube.yaml}
+  Netflix: {type: http, behavior: classical, interval: 86400, url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Netflix/Netflix.yaml", path: ./ruleset/Netflix.yaml}
+  Emby: {type: http, behavior: classical, interval: 86400, url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Emby/Emby.yaml", path: ./ruleset/Emby.yaml}
+  GlobalMedia: {type: http, behavior: classical, interval: 86400, url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/GlobalMedia/GlobalMedia.yaml", path: ./ruleset/GlobalMedia.yaml}
+  NewsMedia: {type: http, behavior: classical, interval: 86400, url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/News/News.yaml", path: ./ruleset/NewsMedia.yaml}
 
   # 社交
-  Telegram: {type: http, behavior: classical, interval: 86400, url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Telegram/Telegram.list", path: ./ruleset/Telegram.yaml}
-  Twitter: {type: http, behavior: classical, interval: 86400, url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Twitter/Twitter.list", path: ./ruleset/Twitter.yaml}
-  TikTok: {type: http, behavior: classical, interval: 86400, url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/TikTok/TikTok.list", path: ./ruleset/TikTok.yaml}
-  Facebook: {type: http, behavior: classical, interval: 86400, url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Facebook/Facebook.list", path: ./ruleset/Facebook.yaml}
-  Instagram: {type: http, behavior: classical, interval: 86400, url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Instagram/Instagram.list", path: ./ruleset/Instagram.yaml}
-  WhatsApp: {type: http, behavior: classical, interval: 86400, url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/WhatsApp/WhatsApp.list", path: ./ruleset/WhatsApp.yaml}
+  Telegram: {type: http, behavior: classical, interval: 86400, url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Telegram/Telegram.yaml", path: ./ruleset/Telegram.yaml}
+  Twitter: {type: http, behavior: classical, interval: 86400, url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Twitter/Twitter.yaml", path: ./ruleset/Twitter.yaml}
+  TikTok: {type: http, behavior: classical, interval: 86400, url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/TikTok/TikTok.yaml", path: ./ruleset/TikTok.yaml}
+  Facebook: {type: http, behavior: classical, interval: 86400, url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Facebook/Facebook.yaml", path: ./ruleset/Facebook.yaml}
+  Instagram: {type: http, behavior: classical, interval: 86400, url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Instagram/Instagram.yaml", path: ./ruleset/Instagram.yaml}
+  WhatsApp: {type: http, behavior: classical, interval: 86400, url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Whatsapp/Whatsapp.yaml", path: ./ruleset/WhatsApp.yaml}
 
   # 商业
-  PayPal: {type: http, behavior: classical, interval: 86400, url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/PayPal/PayPal.list", path: ./ruleset/PayPal.yaml}
-  Crypto: {type: http, behavior: classical, interval: 86400, url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Crypto/Crypto.list", path: ./ruleset/Crypto.yaml}
-  Microsoft: {type: http, behavior: classical, interval: 86400, url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Microsoft/Microsoft.list", path: ./ruleset/Microsoft.yaml}
-  Google: {type: http, behavior: classical, interval: 86400, url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Google/Google.list", path: ./ruleset/Google.yaml}
-  Apple: {type: http, behavior: classical, interval: 86400, url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Apple/Apple.list", path: ./ruleset/Apple.yaml}
-  Game: {type: http, behavior: classical, interval: 86400, url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Game/Game.list", path: ./ruleset/Game.yaml}
+  PayPal: {type: http, behavior: classical, interval: 86400, url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/PayPal/PayPal.yaml", path: ./ruleset/PayPal.yaml}
+  Crypto: {type: http, behavior: classical, interval: 86400, url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Crypto/Crypto.yaml", path: ./ruleset/Crypto.yaml}
+  Microsoft: {type: http, behavior: classical, interval: 86400, url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Microsoft/Microsoft.yaml", path: ./ruleset/Microsoft.yaml}
+  Google: {type: http, behavior: classical, interval: 86400, url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Google/Google.yaml", path: ./ruleset/Google.yaml}
+  Apple: {type: http, behavior: classical, interval: 86400, url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Apple/Apple.yaml", path: ./ruleset/Apple.yaml}
+  Game: {type: http, behavior: classical, interval: 86400, url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Game/Game.yaml", path: ./ruleset/Game.yaml}
 
   # 工具/兜底
-  Speedtest: {type: http, behavior: classical, interval: 86400, url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Speedtest/Speedtest.list", path: ./ruleset/Speedtest.yaml}
-  Proxy: {type: http, behavior: classical, interval: 86400, url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Proxy/Proxy.list", path: ./ruleset/Proxy.yaml}
+  Speedtest: {type: http, behavior: classical, interval: 86400, url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Speedtest/Speedtest.yaml", path: ./ruleset/Speedtest.yaml}
+  Proxy: {type: http, behavior: classical, interval: 86400, url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Proxy/Proxy.yaml", path: ./ruleset/Proxy.yaml}
 
 # ==================== EOF ====================
