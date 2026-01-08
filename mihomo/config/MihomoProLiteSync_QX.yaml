@@ -1,0 +1,272 @@
+# >>=====================================<<
+# 名称: MihomoProLite (QX Sync Version)
+# 地址: https://github.com/666OS/YYDS
+# 版本: v6.1.0_Lite_Sync_QX
+# 更新: 2026-01-08
+# ==================== 锚点配置 ====================
+# 代理提供者模板
+BaseProvider: &BaseProvider {type: http, interval: 86400, proxy: DIRECT, health-check: {enable: true, url: 'https://www.google.com/generate_204', interval: 300}, filter: '^(?!.*(群|邀请|返利|循环|官网|客服|网站|网址|获取|订阅|流量|到期|机场|下次|版本|官址|备用|过期|已用|联系|邮箱|工单|贩卖|通知|倒卖|防止|国内|地址|频道|无法|说明|使用|提示|特别|访问|支持|教程|关注|更新|作者|加入|USE|USED|TOTAL|EXPIRE|EMAIL|Panel|Channel|Author))'}
+
+# 策略组类型模板
+BaseFB: &BaseFB {type: fallback, interval: 200, lazy: true, url: 'https://www.google.com/generate_204'}
+BaseCH: &BaseCH {type: load-balance, interval: 200, lazy: true, url: 'https://www.google.com/generate_204', strategy: consistent-hashing, hidden: true}
+BaseCR: &BaseCR {type: load-balance, interval: 200, lazy: true, url: 'https://www.google.com/generate_204', strategy: round-robin, hidden: true}
+BaseUT: &BaseUT {type: url-test, interval: 200, lazy: true, url: 'https://www.google.com/generate_204', hidden: true}
+
+# 节点筛选正则
+FilterHK: &FilterHK '^(?=.*(?i)(港|🇭🇰|HK|Hong|HKG))(?!.*(排除1|排除2|5x)).*$'
+FilterSG: &FilterSG '^(?=.*(?i)(坡|🇸🇬|SG|Sing|SIN|XSP))(?!.*(排除1|排除2|5x)).*$'
+FilterJP: &FilterJP '^(?=.*(?i)(日|🇯🇵|JP|Japan|NRT|HND|KIX|CTS|FUK))(?!.*(排除1|排除2|5x)).*$'
+FilterUS: &FilterUS '^(?=.*(?i)(美|🇺🇸|US|USA|SJC|JFK|LAX|ORD|ATL|DFW|SFO|MIA|SEA|IAD))(?!.*(排除1|排除2|5x)).*$'
+FilterAL: &FilterAL '^(?!.*(DIRECT|直接连接|群|邀请|返利|循环|官网|客服|网站|网址|获取|订阅|流量|到期|机场|下次|版本|官址|备用|过期|已用|联系|邮箱|工单|贩卖|通知|倒卖|防止|国内|地址|频道|无法|说明|使用|提示|特别|访问|支持|教程|关注|更新|作者|加入|USE|USED|TOTAL|EXPIRE|EMAIL|Panel|Channel|Author))'
+
+# 策略组模板
+SelectFB: &SelectFB {type: select, proxies: [故障转移, 香港策略, 狮城策略, 日本策略, 美国策略, 全球手动, 直接连接]}
+SelectPY: &SelectPY {type: select, proxies: [默认代理, 故障转移, 香港策略, 狮城策略, 日本策略, 美国策略, 全球手动, 直接连接]}
+SelectDC: &SelectDC {type: select, proxies: [直接连接, 默认代理, 故障转移, 香港策略, 狮城策略, 日本策略, 美国策略, 全球手动]}
+SelectUS: &SelectUS {type: select, proxies: [美国策略, 默认代理, 故障转移, 香港策略, 狮城策略, 日本策略, 全球手动, 直接连接]}
+SelectSG: &SelectSG {type: select, proxies: [狮城策略, 默认代理, 故障转移, 香港策略, 日本策略, 美国策略, 全球手动, 直接连接]}
+
+# ==================== 代理提供者 ====================
+proxy-providers:
+  # 请在下方 url 处填入你的订阅链接
+  优质服务商: {<<: *BaseProvider, url: '你的机场订阅链接', override: {additional-prefix: '[优] '}}
+  备用服务商: {<<: *BaseProvider, url: '你的备用订阅链接', override: {additional-prefix: '[备] '}}
+
+# ==================== 核心配置 ====================
+mode: rule
+port: 7890
+socks-port: 7891
+redir-port: 7892
+mixed-port: 7893
+tproxy-port: 7895
+ipv6: true
+allow-lan: true
+unified-delay: true
+tcp-concurrent: true
+log-level: warning
+bind-address: '*'
+find-process-mode: 'always'
+global-client-fingerprint: chrome
+keep-alive-interval: 15
+keep-alive-idle: 600
+
+authentication:
+  - mihomo:yyds666
+skip-auth-prefixes:
+  - 192.168.1.0/24
+  - 127.0.0.1/8
+  - 10.0.0.0/8
+
+experimental:
+  quic-go-disable-gso: true
+
+external-ui-url: https://github.com/Zephyruso/zashboard/releases/latest/download/dist.zip
+external-ui-name: zashboard
+external-ui: ui
+external-controller: 127.0.0.1:9090
+secret: 123456
+
+profile:
+  store-selected: true
+  store-fake-ip: true
+
+sniffer:
+  enable: true
+  sniff:
+    HTTP:
+      ports: [80, 8080-8880]
+      override-destination: true
+    TLS:
+      ports: [443, 8443]
+    QUIC:
+      ports: [443, 8443]
+  skip-domain:
+    - "Mijia Cloud"
+    - "+.push.apple.com"
+
+tun:
+  enable: false
+  stack: mixed
+  dns-hijack:
+    - "any:53"
+    - "tcp://any:53"
+  auto-route: true
+  auto-redirect: true
+  auto-detect-interface: true
+
+dns:
+  enable: true
+  ipv6: true
+  enhanced-mode: fake-ip
+  fake-ip-range: 198.18.0.1/16
+  default-nameserver:
+    - 223.5.5.5
+    - 119.29.29.29
+  nameserver:
+    - https://dns.alidns.com/dns-query
+    - https://doh.pub/dns-query
+  fake-ip-filter:
+    - rule-set:Direct
+    - rule-set:LocalAreaNetwork
+    - rule-set:ChinaMax
+    - +.miwifi.com
+    - +.docker.io
+    - +.lan
+    - +.local
+    - +.plex.direct
+
+# ==================== 代理策略组 ====================
+proxy-groups:
+  # ==================== 主要策略组 ====================
+  - {name: 默认代理,      <<: *SelectFB, icon: https://git.imee.me/https://github.com/Koolson/Qure/raw/master/IconSet/Color/Static.png}
+  - {name: 故障转移,      <<: *BaseFB, proxies: [香港策略, 狮城策略, 日本策略, 美国策略, 全球手动, 直接连接], icon: https://git.imee.me/https://github.com/Koolson/Qure/raw/master/IconSet/Color/ULB.png}
+  - {name: 国外流量,      <<: *SelectPY, icon: https://git.imee.me/https://github.com/Koolson/Qure/raw/master/IconSet/Color/Global.png}
+  - {name: 国内流量,      <<: *SelectDC, icon: https://git.imee.me/https://github.com/Koolson/Qure/raw/master/IconSet/Color/China.png}
+  - {name: 兜底流量,      <<: *SelectPY, icon: https://git.imee.me/https://github.com/Koolson/Qure/raw/master/IconSet/Color/Final.png}
+  - {name: 直接连接,      type: select, proxies: [DIRECT], hidden: true, icon: https://git.imee.me/https://github.com/Koolson/Qure/raw/master/IconSet/Color/Direct.png}
+
+  # ==================== 功能策略组 ====================
+  - {name: 网络测试,      <<: *SelectPY, include-all: true, filter: *FilterAL, icon: https://git.imee.me/https://github.com/Koolson/Qure/raw/master/IconSet/Color/Speedtest.png}
+  - {name: 抖快书定位,    type: select, proxies: [直接连接, 香港策略, 狮城策略, 日本策略, 美国策略], icon: https://git.imee.me/https://github.com/Koolson/Qure/raw/master/IconSet/Color/Null_Nation.png}
+
+  # ==================== 媒体服务 ====================
+  - {name: Emby,          <<: *SelectPY, icon: https://git.imee.me/https://github.com/Koolson/Qure/raw/master/IconSet/Color/Emby.png}
+  - {name: YouTube,       <<: *SelectPY, icon: https://git.imee.me/https://github.com/Koolson/Qure/raw/master/IconSet/Color/YouTube.png}
+  - {name: Netflix,       <<: *SelectPY, icon: https://git.imee.me/https://github.com/Koolson/Qure/raw/master/IconSet/Color/Netflix.png}
+  - {name: GlobalMedia,   <<: *SelectPY, icon: https://git.imee.me/https://github.com/Koolson/Qure/raw/master/IconSet/Color/DomesticMedia.png}
+  - {name: NewsMedia,     <<: *SelectUS, icon: https://git.imee.me/https://github.com/Koolson/Qure/raw/master/IconSet/Color/Apple_News.png}
+
+  # ==================== 社交平台 (拆分对齐QX) ====================
+  - {name: Telegram,      <<: *SelectPY, icon: https://git.imee.me/https://github.com/Koolson/Qure/raw/master/IconSet/Color/Telegram_X.png}
+  - {name: Twitter,       <<: *SelectPY, icon: https://git.imee.me/https://github.com/Koolson/Qure/raw/master/IconSet/Color/X.png}
+  - {name: TikTok,        <<: *SelectPY, icon: https://git.imee.me/https://github.com/Koolson/Qure/raw/master/IconSet/Color/Tiktok.png}
+  - {name: Facebook,      <<: *SelectPY, icon: https://git.imee.me/https://github.com/Koolson/Qure/raw/master/IconSet/Color/Facebook.png}
+  - {name: Instagram,     <<: *SelectPY, icon: https://git.imee.me/https://github.com/Koolson/Qure/raw/master/IconSet/Color/Instagram.png}
+  - {name: WhatsApp,      <<: *SelectPY, icon: https://git.imee.me/https://github.com/Koolson/Qure/raw/master/IconSet/Color/WhatsApp.png}
+
+  # ==================== 商业服务 ====================
+  - {name: OpenAI,        <<: *SelectUS, icon: https://git.imee.me/https://github.com/Koolson/Qure/raw/master/IconSet/Color/AI.png}
+  - {name: PayPal,        <<: *SelectSG, icon: https://git.imee.me/https://github.com/Koolson/Qure/raw/master/IconSet/Color/PayPal.png}
+  - {name: Crypto,        <<: *SelectSG, icon: https://raw.githubusercontent.com/Orz-3/mini/master/Alpha/Bitcloud.png}
+  - {name: Game,          <<: *SelectPY, icon: https://git.imee.me/https://github.com/Koolson/Qure/raw/master/IconSet/Color/Game.png}
+  - {name: Microsoft,     <<: *SelectPY, icon: https://git.imee.me/https://github.com/Koolson/Qure/raw/master/IconSet/Color/Microsoft.png}
+  - {name: Google,        <<: *SelectPY, icon: https://git.imee.me/https://github.com/Koolson/Qure/raw/master/IconSet/Color/Google_Search.png}
+  - {name: Apple,         <<: *SelectPY, icon: https://git.imee.me/https://github.com/Koolson/Qure/raw/master/IconSet/Color/Apple.png}
+
+  # ==================== 地区策略组 ====================
+  - {name: 香港策略,      type: select, proxies: [香港自动, 香港均衡-散列, 香港均衡-轮询], include-all: true, filter: *FilterHK, icon: https://git.imee.me/https://github.com/Koolson/Qure/raw/master/IconSet/Color/Hong_Kong.png}
+  - {name: 狮城策略,      type: select, proxies: [狮城自动, 狮城均衡-散列, 狮城均衡-轮询], include-all: true, filter: *FilterSG, icon: https://git.imee.me/https://github.com/Koolson/Qure/raw/master/IconSet/Color/Singapore.png}
+  - {name: 日本策略,      type: select, proxies: [日本自动, 日本均衡-散列, 日本均衡-轮询], include-all: true, filter: *FilterJP, icon: https://git.imee.me/https://github.com/Koolson/Qure/raw/master/IconSet/Color/Japan.png}
+  - {name: 美国策略,      type: select, proxies: [美国自动, 美国均衡-散列, 美国均衡-轮询], include-all: true, filter: *FilterUS, icon: https://git.imee.me/https://github.com/Koolson/Qure/raw/master/IconSet/Color/United_States.png}
+
+  # ==================== 其他策略组 ====================
+  - {name: 全球手动,      type: select, include-all: true, filter: *FilterAL, icon: https://git.imee.me/https://github.com/Koolson/Qure/raw/master/IconSet/Color/Clubhouse.png}
+
+  # ==================== 自动测速组 ====================
+  - {name: 香港自动,      <<: *BaseUT, include-all: true, filter: *FilterHK, icon: https://git.imee.me/https://github.com/Koolson/Qure/raw/master/IconSet/Color/Auto.png}
+  - {name: 狮城自动,      <<: *BaseUT, include-all: true, filter: *FilterSG, icon: https://git.imee.me/https://github.com/Koolson/Qure/raw/master/IconSet/Color/Auto.png}
+  - {name: 日本自动,      <<: *BaseUT, include-all: true, filter: *FilterJP, icon: https://git.imee.me/https://github.com/Koolson/Qure/raw/master/IconSet/Color/Auto.png}
+  - {name: 美国自动,      <<: *BaseUT, include-all: true, filter: *FilterUS, icon: https://git.imee.me/https://github.com/Koolson/Qure/raw/master/IconSet/Color/Auto.png}
+
+  # ==================== 负载均衡-散列 ====================
+  - {name: 香港均衡-散列, <<: *BaseCH, include-all: true, filter: *FilterHK, icon: https://git.imee.me/https://github.com/Koolson/Qure/raw/master/IconSet/Color/Round_Robin_1.png}
+  - {name: 狮城均衡-散列, <<: *BaseCH, include-all: true, filter: *FilterSG, icon: https://git.imee.me/https://github.com/Koolson/Qure/raw/master/IconSet/Color/Round_Robin_1.png}
+  - {name: 日本均衡-散列, <<: *BaseCH, include-all: true, filter: *FilterJP, icon: https://git.imee.me/https://github.com/Koolson/Qure/raw/master/IconSet/Color/Round_Robin_1.png}
+  - {name: 美国均衡-散列, <<: *BaseCH, include-all: true, filter: *FilterUS, icon: https://git.imee.me/https://github.com/Koolson/Qure/raw/master/IconSet/Color/Round_Robin_1.png}
+
+  # ==================== 负载均衡-轮询 ====================
+  - {name: 香港均衡-轮询, <<: *BaseCR, include-all: true, filter: *FilterHK, icon: https://git.imee.me/https://github.com/Koolson/Qure/raw/master/IconSet/Color/Round_Robin.png}
+  - {name: 狮城均衡-轮询, <<: *BaseCR, include-all: true, filter: *FilterSG, icon: https://git.imee.me/https://github.com/Koolson/Qure/raw/master/IconSet/Color/Round_Robin.png}
+  - {name: 日本均衡-轮询, <<: *BaseCR, include-all: true, filter: *FilterJP, icon: https://git.imee.me/https://github.com/Koolson/Qure/raw/master/IconSet/Color/Round_Robin.png}
+  - {name: 美国均衡-轮询, <<: *BaseCR, include-all: true, filter: *FilterUS, icon: https://git.imee.me/https://github.com/Koolson/Qure/raw/master/IconSet/Color/Round_Robin.png}
+
+# ==================== 规则路由 ====================
+rules:
+  # 拦截规则
+  - RULE-SET,Tracking,REJECT
+  - RULE-SET,Advertising,REJECT
+  - RULE-SET,Privacy,REJECT
+  - AND,((DST-PORT,443),(NETWORK,UDP)),REJECT  # 阻止 QUIC
+
+  # 域名直连规则
+  - DOMAIN-SUFFIX,plex.direct,直接连接
+  - DOMAIN-SUFFIX,190903.xyz,直接连接
+  - RULE-SET,AppleCN,直接连接
+  - RULE-SET,LocalAreaNetwork,直接连接
+  - RULE-SET,ChinaMax,国内流量
+
+  # 应用规则
+  - RULE-SET,AppleAI_Gist,OpenAI
+  - RULE-SET,OpenAI,OpenAI
+  - RULE-SET,PayPal,PayPal
+  - RULE-SET,YouTube,YouTube
+  - RULE-SET,Netflix,Netflix
+  - RULE-SET,Emby,Emby
+  - RULE-SET,TikTok,TikTok
+  - RULE-SET,Telegram,Telegram
+  - RULE-SET,Twitter,Twitter
+  - RULE-SET,Facebook,Facebook
+  - RULE-SET,Instagram,Instagram
+  - RULE-SET,WhatsApp,WhatsApp
+  - RULE-SET,GlobalMedia,GlobalMedia
+  - RULE-SET,NewsMedia,NewsMedia
+  - RULE-SET,Game,Game
+  - RULE-SET,Crypto,Crypto
+  - RULE-SET,Apple,Apple
+  - RULE-SET,Google,Google
+  - RULE-SET,Microsoft,Microsoft
+  - DOMAIN-KEYWORD,speedtest,网络测试
+  - RULE-SET,Speedtest,网络测试
+  - RULE-SET,Proxy,国外流量
+
+  # 兜底规则 (白名单模式，不认识的走兜底->代理)
+  - GEOIP,CN,国内流量
+  - MATCH,兜底流量
+
+# ==================== 规则集提供者 (Blackmatrix7 Clash版) ====================
+# 使用 behavior: classical 引用 .list 文件，保持与 QX 规则高度一致
+rule-providers:
+  # 广告/隐私
+  Advertising: {type: http, behavior: classical, interval: 86400, url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Advertising/Advertising.list", path: ./ruleset/Advertising.yaml}
+  Privacy: {type: http, behavior: classical, interval: 86400, url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Privacy/Privacy.list", path: ./ruleset/Privacy.yaml}
+  Tracking: {type: http, behavior: classical, interval: 86400, url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Global/Global.list", path: ./ruleset/Tracking.yaml}
+
+  # 直连
+  AppleCN: {type: http, behavior: classical, interval: 86400, url: "https://raw.githubusercontent.com/666OS/rules/refs/heads/release/surge/AppleCN.txt", path: ./ruleset/AppleCN.yaml}
+  ChinaMax: {type: http, behavior: classical, interval: 86400, url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/ChinaMax/ChinaMax.list", path: ./ruleset/ChinaMax.yaml}
+  LocalAreaNetwork: {type: http, behavior: classical, interval: 86400, url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Lan/Lan.list", path: ./ruleset/Lan.yaml}
+  Direct: {type: http, behavior: classical, interval: 86400, url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Direct/Direct.list", path: ./ruleset/Direct.yaml}
+
+  # AI
+  AppleAI_Gist: {type: http, behavior: classical, interval: 86400, url: "https://gist.githubusercontent.com/shinzi0427/920602c317d3649f56ce75495e1efaca/raw/Apple-Intelligence.list", path: ./ruleset/AppleAI_Gist.yaml}
+  OpenAI: {type: http, behavior: classical, interval: 86400, url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/OpenAI/OpenAI.list", path: ./ruleset/OpenAI.yaml}
+
+  # 媒体
+  YouTube: {type: http, behavior: classical, interval: 86400, url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/YouTube/YouTube.list", path: ./ruleset/YouTube.yaml}
+  Netflix: {type: http, behavior: classical, interval: 86400, url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Netflix/Netflix.list", path: ./ruleset/Netflix.yaml}
+  Emby: {type: http, behavior: classical, interval: 86400, url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Emby/Emby.list", path: ./ruleset/Emby.yaml}
+  GlobalMedia: {type: http, behavior: classical, interval: 86400, url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/GlobalMedia/GlobalMedia.list", path: ./ruleset/GlobalMedia.yaml}
+  NewsMedia: {type: http, behavior: classical, interval: 86400, url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/News/News.list", path: ./ruleset/NewsMedia.yaml}
+
+  # 社交
+  Telegram: {type: http, behavior: classical, interval: 86400, url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Telegram/Telegram.list", path: ./ruleset/Telegram.yaml}
+  Twitter: {type: http, behavior: classical, interval: 86400, url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Twitter/Twitter.list", path: ./ruleset/Twitter.yaml}
+  TikTok: {type: http, behavior: classical, interval: 86400, url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/TikTok/TikTok.list", path: ./ruleset/TikTok.yaml}
+  Facebook: {type: http, behavior: classical, interval: 86400, url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Facebook/Facebook.list", path: ./ruleset/Facebook.yaml}
+  Instagram: {type: http, behavior: classical, interval: 86400, url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Instagram/Instagram.list", path: ./ruleset/Instagram.yaml}
+  WhatsApp: {type: http, behavior: classical, interval: 86400, url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/WhatsApp/WhatsApp.list", path: ./ruleset/WhatsApp.yaml}
+
+  # 商业
+  PayPal: {type: http, behavior: classical, interval: 86400, url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/PayPal/PayPal.list", path: ./ruleset/PayPal.yaml}
+  Crypto: {type: http, behavior: classical, interval: 86400, url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Crypto/Crypto.list", path: ./ruleset/Crypto.yaml}
+  Microsoft: {type: http, behavior: classical, interval: 86400, url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Microsoft/Microsoft.list", path: ./ruleset/Microsoft.yaml}
+  Google: {type: http, behavior: classical, interval: 86400, url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Google/Google.list", path: ./ruleset/Google.yaml}
+  Apple: {type: http, behavior: classical, interval: 86400, url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Apple/Apple.list", path: ./ruleset/Apple.yaml}
+  Game: {type: http, behavior: classical, interval: 86400, url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Game/Game.list", path: ./ruleset/Game.yaml}
+
+  # 工具/兜底
+  Speedtest: {type: http, behavior: classical, interval: 86400, url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Speedtest/Speedtest.list", path: ./ruleset/Speedtest.yaml}
+  Proxy: {type: http, behavior: classical, interval: 86400, url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Proxy/Proxy.list", path: ./ruleset/Proxy.yaml}
+
+# ==================== EOF ====================
